@@ -5,59 +5,57 @@ function Result({ matrix }) {
   const [sum, setSum] = useState()
   
   useEffect(() => {
-    if (matrix) {
-      let balancedMatrix, i = 1, j = 1, resultSum = 0
+    let balancedMatrix, i = 1, j = 1, resultSum = 0
 
-      let supplies = [...matrix].slice(1).map((row) => row[0])
-      let demands = [...matrix[0]].slice(1)
+    let supplies = [...matrix].slice(1).map((row) => row[0])
+    let demands = [...matrix[0]].slice(1)
 
-      let sumSupplies = supplies.reduce((sum, value) => sum + value, 0)
-      let sumDemands = demands.reduce((sum, value) => sum + value, 0)
+    let sumSupplies = supplies.reduce((sum, value) => sum + value, 0)
+    let sumDemands = demands.reduce((sum, value) => sum + value, 0)
 
-      if (sumSupplies != sumDemands) {
-        balancedMatrix = matrix.map(row => [...row])
+    if (sumSupplies != sumDemands) {
+      balancedMatrix = matrix.map(row => [...row])
 
-        if (sumSupplies > sumDemands) {
-          let col = Array.from({ length: matrix.length }, () => 0)
-          col[0] = sumSupplies - sumDemands
-          balancedMatrix[0].push(col[0])
-          for (let i = 1; i < matrix.length; i++) {
-            balancedMatrix[i].push(0)
-          }
-        }
-        else {
-          let row = Array.from({ length: matrix[0].length }, () => 0)
-          row[0] = sumDemands - sumSupplies
-          row.push(0)
-          balancedMatrix.push(row)
+      if (sumSupplies > sumDemands) {
+        let col = Array.from({ length: matrix.length }, () => 0)
+        col[0] = sumSupplies - sumDemands
+        balancedMatrix[0].push(col[0])
+        for (let i = 1; i < matrix.length; i++) {
+          balancedMatrix[i].push(0)
         }
       }
       else {
-        balancedMatrix = matrix
+        let row = Array.from({ length: matrix[0].length }, () => 0)
+        row[0] = sumDemands - sumSupplies
+        row.push(0)
+        balancedMatrix.push(row)
       }
-
-      supplies = [...balancedMatrix].slice(1).map((row) => row[0])
-      demands = [...balancedMatrix[0]].slice(1)
-
-      const numberSupplies = balancedMatrix.length
-      const numberDemands = balancedMatrix[0].length
-      
-      let resultMatrix = Array.from({ length: numberSupplies }, () =>
-        Array.from({ length: numberDemands }, () =>
-          0
-        )
-      )
-
-      while (i < numberSupplies && j < numberDemands) {
-        let min = Math.min(supplies[i - 1], demands[j - 1])
-        resultMatrix[i][j] = min, resultSum += min * balancedMatrix[i][j]
-        supplies[i - 1] -= min, demands[j - 1] -= min
-        supplies[i - 1] == 0 ? i++ : j++
-      }
-
-      setArray(resultMatrix)
-      setSum(resultSum)
     }
+    else {
+      balancedMatrix = matrix
+    }
+
+    supplies = [...balancedMatrix].slice(1).map((row) => row[0])
+    demands = [...balancedMatrix[0]].slice(1)
+
+    const numberSupplies = balancedMatrix.length
+    const numberDemands = balancedMatrix[0].length
+    
+    let resultMatrix = Array.from({ length: numberSupplies }, () =>
+      Array.from({ length: numberDemands }, () =>
+        0
+      )
+    )
+
+    while (i < numberSupplies && j < numberDemands) {
+      let min = Math.min(supplies[i - 1], demands[j - 1])
+      resultMatrix[i][j] = min, resultSum += min * balancedMatrix[i][j]
+      supplies[i - 1] -= min, demands[j - 1] -= min
+      supplies[i - 1] == 0 ? i++ : j++
+    }
+
+    setArray(resultMatrix)
+    setSum(resultSum)
   }, [matrix])
   
   return (
@@ -83,4 +81,5 @@ function Result({ matrix }) {
       <h1>{sum}</h1>
     </>
   )
+
 }
