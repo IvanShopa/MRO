@@ -2,7 +2,7 @@ const { createRoot } = ReactDOM
 const { useState } = React
 
 function Main() {
-  const [step, setStep] = useState(3)
+  const [step, setStep] = useState(1)
   const [rows, setRows] = useState()
   const [cols, setCols] = useState()
   const [array, setArray] = useState()
@@ -32,5 +32,6 @@ function Main() {
     </>
   )
 }
+
 
 createRoot(document.querySelector('container')).render(<Main />)
